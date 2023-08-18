@@ -1,0 +1,64 @@
+{%extends "base.html"%}
+
+{% block head %}
+        <link rel="stylesheet" href="../static/styles.css">
+        <link rel="stylesheet" href="../static/rests.css">
+{% endblock %}
+
+{%block body%}
+
+<div class="container" style="max-width: 93.5rem;
+                    margin: 0 auto;
+                    padding: 0 2rem; ">
+
+{%set p=post%}
+
+    <div class="card mb-3 align-middle" style=' margin-top: 80px;'>
+        <div class="card-header"><p>By: <strong><a href="{{url_for('profile', username=p.author.username)}}">{{p.author.username}}</a></strong></p>
+            {% if p.author.username == current_user.username %}
+                <p>
+                    <a href="{{ url_for('edit_post', id=p.id) }}">Edit Post</a>
+                </p>
+            {% endif %}
+
+            <img src="{{ p.img }}" class="card-img-top" alt="...">
+            <div class="card-body">
+                {% if current_user.post_liked(p) %}
+                    <a href="{{ url_for('like_action', post_id= p.id, action='dislike') }}" class='dislikes' id={{p.id}}>Dislike</a>
+
+                {%else%}
+                    <a href="{{ url_for('like_action', post_id= p.id, action='like') }}" class='likes' id={{p.id}}>Like</a>
+                {%endif%}
+                {%if current_user.username == p.author.username%}
+                    <a href="{{url_for('delete_post', id=p.id)}}">Delete</a>
+                {%endif%}
+
+                <p id="count_{{p.id}}" >{{ p.likes.count() }}</p>
+
+                <p class="card-text"><small class="text-muted">Posted: {{p.timestamp}}</small></p>
+            </div>
+
+            <div  style="" id='post_{{p.id}}'>
+                {%for c in comments%}
+                {%if p.id == c.comments.id%}
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" style='border: none;' id='prof'>
+                            <a href="{{url_for('profile', username=c.author.username)}}" style='text-decoration: none; color:black'>
+                            <strong>{{c.author.username}}: </strong></a> <span id='body'>{{c.body}}</span>
+                            <p class="card-text"><small class="text-muted">Commented: {{p.timestamp}}</small></p></li>
+                    </ul>
+                {%endif%}
+                {%endfor%}
+            </div>
+
+            <div>
+                <form action="{{ url_for('addComment', post_id=p.id) }}" method="post" id="post_{{ p.id }}">
+                    <label>
+                        <input class="form-control comment" placeholder="Add a comment" style="width: 35.9em; height: 4em" type="text" id='comment_{{p.id}}' name="Comment">
+                        <input type="submit" id="p_{{ p.id }}">
+                    </label>
+                </form>
+            </div>
+        </div>
+    </div>
+    {%endblock%}

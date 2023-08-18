@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block head %}
+    <title>flask music database</title>
+{% endblock %}
+
+{% block body %}
+<h2>Search User</h2>
+
+{% from "formhelpers.html" import render_field %}
+<form method=post>
+    <p>
+    {{ render_field(form.search) }}
+    <p>
+      <input type=submit value=search>
+</form>
+{% endblock %}

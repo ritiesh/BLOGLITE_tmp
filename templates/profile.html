@@ -1,0 +1,377 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Profile</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet" href="../static/rests.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <style>
+        img{
+            padding-bottom: 15px;
+        }
+        .button-link {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff; /* Button background color */
+        color: #fff; /* Button text color */
+        text-align: center;
+        text-decoration: none;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+            margin-left: 30%;
+            font-size: 15px;
+    }
+
+    .button-link:hover {
+        background-color: #FFD9B7; /* Button background color on hover */
+    }
+    </style>
+{% endblock %}
+{% block body %}
+    <header>
+
+    <div class="container">
+
+    <div class="profile">
+
+        <div class="profile-image">
+
+            <img src="{{ user.avatar(150) }}" alt="">
+
+        </div>
+
+        <div class="profile-user-settings">
+
+            <h1 class="profile-user-name">{{ user.username }}</h1>
+
+            {% if current_user.is_following(user) and current_user.username!=user.username %}
+
+                <button class="button-link"><a href="{{ url_for('unfollow', username=user.username ) }}" class="unfollow">Unfollow</a></button>
+
+            {% elif user.username != current_user.username %}
+
+                <button type="submit" class="btn profile-edit-btn"><a href="/follow/{{user.id}}"> Follow</a></button>
+
+
+            {% endif %}
+{#            <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>#}
+
+        </div>
+
+        <div class="profile-stats">
+
+            <ul>
+                <li><center><span class="profile-stat-count">{{ count }}<br></span>Posts </center></li>
+                <li><center><span class="profile-stat-count">{{ user.followers.count() }}<br></span>
+                    <a style="text-decoration: none;color: #262626" href="{{ url_for('all_followers', username=user.username) }}"> Followers</a></center></li>
+                <li><center><span class="profile-stat-count">{{ user.followed.count() }}<br></span>
+                    <a style="text-decoration: none;color: #262626" href="{{ url_for('all_followings', username=user.username) }}">Following</a></center></li>
+            </ul>
+
+        </div>
+
+        <div class="profile-bio">
+
+            <p><span class="profile-real-name"></span>
+                {{ user.f_name }} <br> {{ user.about_me }}</p>
+
+        </div>
+
+        {% if user == current_user %}
+            <p>
+                <a href="{{ url_for('edit_profile', username=user.username) }}" class="button-link">Edit profile</a>
+            </p>
+        {% endif %}
+
+    </div>
+    <!-- End of profile section -->
+
+    </div>
+    <!-- End of container -->
+
+    </header>
+
+    <main>
+
+    <div class="container">
+
+    <div class="gallery">
+        {% if posts| length!=0 %}
+
+            {% for p in posts %}
+
+                <div class="gallery-item" >
+
+{#              <img src="https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=500&h=500&fit=crop" class="gallery-image" alt="">#}
+                <a href="{{ url_for('post_detail', id=p.id) }}"><img style="border-radius: 50px" src="{{ p.img }}" class="card-img-top" alt="" height="300" width="auto"></a>
+                    <p><center><span style="font-size: 20px" class="profile-real-name">{{ p.description }}</span></center></p>
+                </div>
+
+                    <div class="gallery-item-info">
+                        <ul>
+                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i></li>
+                    <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 2</li>
+
+                        </ul>
+                    </div>
+            {% endfor %}
+        {% endif %}
+        {% if user.username == current_user.username %}
+            {% if posts| length ==0 %}
+                <div class="alert alert-dark" role="alert">
+                    Sorry but no posts were found. Try posting something.
+                </div>
+            {% endif %}
+            </div>
+                <div class="col">
+                    <p style="font-family: Rage Italic;font-size: 15px">Hello, {{ current_user.username }}</p><br>
+                    <p style="font-family: Rage Italic;font-size: 15px">Wanna post something, <br><a href="{{ url_for('create_post') }}"><button style="margin-top: 8px" class="btn btn-outline-dark">Create a Post</button></a></p>
+                </div>
+            </div>
+        {% elif posts|length ==0 %}
+            <div class="alert alert-dark" role="alert">
+                    This user haven't posted lately
+                </div>
+        {% endif %}
+{##}
+{#        </div>#}
+{##}
+{#        <div class="gallery-item" tabindex="0">#}
+{##}
+{#            <img src="https://images.unsplash.com/photo-1497445462247-4330a224fdb1?w=500&h=500&fit=crop" class="gallery-image" alt="">#}
+{##}
+{#            <div class="gallery-item-info">#}
+{##}
+{#                <ul>#}
+{#                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 89</li>#}
+{#                    <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 5</li>#}
+{#                </ul>#}
+{##}
+{#            </div>#}
+{##}
+{#        </div>#}
+{##}
+{#        <div class="gallery-item" tabindex="0">#}
+{##}
+{#            <img src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=500&h=500&fit=crop" class="gallery-image" alt="">#}
+{##}
+{#            <div class="gallery-item-type">#}
+{##}
+{#                <span class="visually-hidden">Gallery</span><i class="fas fa-clone" aria-hidden="true"></i>#}
+{##}
+{#            </div>#}
+{##}
+{#            <div class="gallery-item-info">#}
+{##}
+{#                <ul>#}
+{#                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 42</li>#}
+{#                    <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 1</li>#}
+{#                </ul>#}
+{##}
+{#            </div>#}
+{##}
+{#        </div>#}
+{##}
+{#        <div class="gallery-item" tabindex="0">#}
+{##}
+{#            <img src="https://images.unsplash.com/photo-1502630859934-b3b41d18206c?w=500&h=500&fit=crop" class="gallery-image" alt="">#}
+{##}
+{#            <div class="gallery-item-type">#}
+{##}
+{#                <span class="visually-hidden">Video</span><i class="fas fa-video" aria-hidden="true"></i>#}
+{##}
+{#            </div>#}
+{##}
+{#            <div class="gallery-item-info">#}
+{##}
+{#                <ul>#}
+{#                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 38</li>#}
+{#                    <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 0</li>#}
+{#                </ul>#}
+{##}
+{#            </div>#}
+{##}
+{#        </div>#}
+{##}
+{#        <div class="gallery-item" tabindex="0">#}
+{##}
+{#            <img src="https://images.unsplash.com/photo-1498471731312-b6d2b8280c61?w=500&h=500&fit=crop" class="gallery-image" alt="">#}
+{##}
+{#            <div class="gallery-item-type">#}
+{##}
+{#                <span class="visually-hidden">Gallery</span><i class="fas fa-clone" aria-hidden="true"></i>#}
+{##}
+{#            </div>#}
+{##}
+{#            <div class="gallery-item-info">#}
+{##}
+{#                <ul>#}
+{#                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 47</li>#}
+{#                    <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 1</li>#}
+{#                </ul>#}
+{##}
+{#            </div>#}
+{##}
+{#        </div>#}
+{##}
+{#        <div class="gallery-item" tabindex="0">#}
+{##}
+{#            <img src="https://images.unsplash.com/photo-1515023115689-589c33041d3c?w=500&h=500&fit=crop" class="gallery-image" alt="">#}
+{##}
+{#            <div class="gallery-item-info">#}
+{##}
+{#                <ul>#}
+{#                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 94</li>#}
+{#                    <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 3</li>#}
+{#                </ul>#}
+{##}
+{#            </div>#}
+{##}
+{#        </div>#}
+
+{#        <div class="gallery-item" tabindex="0">#}
+{##}
+{#            <img src="https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=500&h=500&fit=crop" class="gallery-image" alt="">#}
+{##}
+{#            <div class="gallery-item-type">#}
+{##}
+{#                <span class="visually-hidden">Gallery</span><i class="fas fa-clone" aria-hidden="true"></i>#}
+{##}
+{#            </div>#}
+{##}
+{#            <div class="gallery-item-info">#}
+{##}
+{#                <ul>#}
+{#                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 52</li>#}
+{#                    <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 4</li>#}
+{#                </ul>#}
+{##}
+{#            </div>#}
+{##}
+{#        </div>#}
+{##}
+{#        <div class="gallery-item" tabindex="0">#}
+{##}
+{#            <img src="https://images.unsplash.com/photo-1515814472071-4d632dbc5d4a?w=500&h=500&fit=crop" class="gallery-image" alt="">#}
+{##}
+{#            <div class="gallery-item-info">#}
+{##}
+{#                <ul>#}
+{#                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 66</li>#}
+{#                    <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 2</li>#}
+{#                </ul>#}
+{##}
+{#            </div>#}
+{##}
+{#        </div>#}
+{##}
+{#        <div class="gallery-item" tabindex="0">#}
+{##}
+{#            <img src="https://images.unsplash.com/photo-1511407397940-d57f68e81203?w=500&h=500&fit=crop" class="gallery-image" alt="">#}
+{##}
+{#            <div class="gallery-item-type">#}
+{##}
+{#                <span class="visually-hidden">Gallery</span><i class="fas fa-clone" aria-hidden="true"></i>#}
+{##}
+{#            </div>#}
+{##}
+{#            <div class="gallery-item-info">#}
+{##}
+{#                <ul>#}
+{#                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 45</li>#}
+{#                    <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 0</li>#}
+{#                </ul>#}
+{##}
+{#            </div>#}
+{##}
+{#        </div>#}
+{##}
+{#        <div class="gallery-item" tabindex="0">#}
+{##}
+{#            <img src="https://images.unsplash.com/photo-1518481612222-68bbe828ecd1?w=500&h=500&fit=crop" class="gallery-image" alt="">#}
+{##}
+{#            <div class="gallery-item-info">#}
+{##}
+{#                <ul>#}
+{#                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 34</li>#}
+{#                    <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 1</li>#}
+{#                </ul>#}
+{##}
+{#            </div>#}
+{##}
+{#        </div>#}
+{##}
+{#        <div class="gallery-item" tabindex="0">#}
+{##}
+{#            <img src="https://images.unsplash.com/photo-1505058707965-09a4469a87e4?w=500&h=500&fit=crop" class="gallery-image" alt="">#}
+{##}
+{#            <div class="gallery-item-info">#}
+{##}
+{#                <ul>#}
+{#                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 41</li>#}
+{#                    <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 0</li>#}
+{#                </ul>#}
+{##}
+{#            </div>#}
+{##}
+{#        </div>#}
+{##}
+{#        <div class="gallery-item" tabindex="0">#}
+{##}
+{#            <img src="https://images.unsplash.com/photo-1423012373122-fff0a5d28cc9?w=500&h=500&fit=crop" class="gallery-image" alt="">#}
+{##}
+{#            <div class="gallery-item-type">#}
+{##}
+{#                <span class="visually-hidden">Video</span><i class="fas fa-video" aria-hidden="true"></i>#}
+{##}
+{#            </div>#}
+{##}
+{#            <div class="gallery-item-info">#}
+{##}
+{#                <ul>#}
+{#                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 30</li>#}
+{#                    <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 2</li>#}
+{#                </ul>#}
+{##}
+{#            </div>#}
+{##}
+{#        </div>#}
+{##}
+{#    </div>#}
+    <!-- End of gallery -->
+
+{#    <div class="loader"></div>#}
+
+    </div>
+    <!-- End of container -->
+
+    </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add a new post</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" enctype=multipart/form-data>
+                    <p>
+                        <input type=file name=photo>
+                    </p>
+                        <input type="submit" name="">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of modal -->
+{% endblock %}

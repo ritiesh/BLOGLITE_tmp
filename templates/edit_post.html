@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    <h1>Edit Post</h1>
+
+    {% from "formhelpers.html" import render_field %}
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ render_field(form.img) }}
+            {{ render_field(form.desc) }}<br>
+        </p>
+            {{ form.update }}
+    </form>
+{% endblock %}

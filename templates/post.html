@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>post</title>
+{% endblock %}
+
+{% block body %}
+    <div class="center">
+        <form action="/create-post" method="POST" enctype="multipart/form-data">
+            <h1>Post your thing...</h1>
+                {{ form.hidden_tag() }}
+            <h3>Description</h3>
+                {{ form.desc }}
+            <h3>Image</h3>
+                {{ form.img }}<br><br>
+            {{ form.post }}
+        </form>
+    </div>
+{% endblock %}
