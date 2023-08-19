@@ -14,15 +14,19 @@
 <style>
     {% block style %}
         a:hover{
-        background-color: #A8DF8E;
+        background-color: #A0BFE0;
         }
+        body{
+        background-color: #7895CB;
+        }
+
     {% endblock %}
 </style>
 <body>
     {% if current_user.is_authenticated %}
     <div id="navbar" >
     {% block navbar %}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" >
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #4A55A2">
         <a class="navbar-brand">BlogLite</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

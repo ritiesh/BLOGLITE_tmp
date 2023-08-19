@@ -1,16 +1,80 @@
 {% extends 'base.html' %}
+
 {% block head %}
-    <title>flask music database</title>
+    <title>Flask Music Database</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Base styling */
+/* Base styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f1f1f1;
+    background-image: url("black.jpg");
+    background-size: cover;
+    background-position: center;
+    background-blur: 10px;
+}
+
+.container {
+    max-width: 600px;
+    margin-top: 15%;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Form styling */
+.search-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    transition: border-color 0.3s ease-in-out;
+}
+
+input[type="text"]:focus {
+    border-color: #3498db;
+}
+
+.btn {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+}
+
+
+    </style>
 {% endblock %}
 
 {% block body %}
-<h2>Search User</h2>
-
-{% from "formhelpers.html" import render_field %}
-<form method=post>
-    <p>
-    {{ render_field(form.search) }}
-    <p>
-      <input type=submit value=search>
-</form>
+<div class="container">
+    <h2>Search User</h2>
+    {% from "formhelpers.html" import render_field %}
+    <form method="post" class="search-form">
+        <div class="form-group">
+            {{ render_field(form.search) }}
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
 {% endblock %}
